@@ -1,0 +1,79 @@
+<html>
+
+<head>
+  <!-- Simple stylesheet -->
+  <style>
+    .center {
+      display: table;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      color: #253d8d;
+    }
+  </style>
+
+</head>
+
+<!-- Loads drawLine() On start -->
+
+<body id="root" onload="prime()">
+  <center>
+    <canvas id="canvas" style="width:250px; height: 250px; margin-top: 20%;">
+  </center>
+  </canvas>
+
+</body>
+<script>
+  // define our tags for use
+  var main = document.getElementById("root");
+  var c = document.getElementById("canvas"); //Gets canvas onto "c"
+  var ctx = c.getContext("2d"); // Gets "c"(Our canvas) 2d so it can later draw on it
+ 
+  // Website style
+  main.style.backgroundColor = "#253d8d";
+  c.style.backgroundColor = "aqua";
+
+  const time = 750
+
+  //repeats prime() function with 750ms intervals
+  var draw = (() => setInterval(prime, time))
+  draw()
+
+  function prime() {
+     [1,2,3].forEach(drawLine(rand(canvas.width), rand(canvas.height)))
+
+  }
+
+  //Just to make random more efficent to write. 101 = 100
+  function rand(int) {
+    return Math.random() * int
+  }
+
+  //based on time of day with new Date()
+  function color() { }
+
+  //Our drawLine function
+  function drawLine(x, y, id) {
+    clearCanvas()
+    //Stroke/line properties
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = 'red';
+
+    //X valued is given by rand()
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x, y + 20);
+    ctx.stroke();
+    ctx.clear
+  }
+  
+  function clearCanvas(){
+    //Clears canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+</script>
+
+</html>
