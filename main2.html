@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body onload="drawThem()">
+    <canvas id="canvas" style="width:250px; height: 250px; margin-top: 20%;">
+    </canvas>
+
+    <script>
+        var main = document.getElementById("root");
+        var c = document.getElementById("canvas"); //Gets canvas onto "c"
+        var ctx = c.getContext("2d"); // Gets "c"(Our canvas) 2d so it can later draw on it
+
+        class Cross {
+            constructor(x, y, TeckenAttRitaUt) {
+                this.x = x;
+                this.y = y;
+                this.TeckenAttRitaUt = TeckenAttRitaUt;
+
+            }
+
+        }
+
+        const obj1 = new Cross(5, 5, 'P');
+        const obj2 = new Cross(100, 100, 'P');
+        const obj3 = new Cross(150, 150, 'P');
+        const obj4 = new Cross(90, -100, 'P');
+        const obj5 = new Cross(6, 20, 'P');
+
+        var myList = new Array();
+        myList.push(obj1);
+        myList.push(obj2);
+        myList.push(obj3);
+        myList.push(obj4);
+        myList.push(obj5);
+
+
+        function drawThem()
+        {
+            myList.forEach(element => {
+                ctx.beginPath();
+                ctx.moveTo(element.x + 20, element.y + 50);
+                ctx.lineTo(element.x, element.y);
+                ctx.stroke();
+            });
+
+        }
+
+
+    </script>
+</body>
+
+</html>

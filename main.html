@@ -21,8 +21,12 @@
 <body id="root" onload="prime()">
   <center>
     <canvas id="canvas" style="width:250px; height: 250px; margin-top: 20%;">
+    </canvas>
+    <button>
+
+    </button>
   </center>
-  </canvas>
+
 
 </body>
 <script>
@@ -30,19 +34,33 @@
   var main = document.getElementById("root");
   var c = document.getElementById("canvas"); //Gets canvas onto "c"
   var ctx = c.getContext("2d"); // Gets "c"(Our canvas) 2d so it can later draw on it
- 
+
   // Website style
   main.style.backgroundColor = "#253d8d";
   c.style.backgroundColor = "aqua";
 
-  const time = 750
+  const time = 1000
+
+  class Cross {
+    constructor(x, y, id) {
+      this.x = x;
+      this.y = y;
+      this.id = id;
+
+    }
+
+  }
 
   //repeats prime() function with 750ms intervals
-  var draw = (() => setInterval(prime, time))
+  var draw = (() => setInterval(prime(), time))
   draw()
 
   function prime() {
-     [1,2,3].forEach(drawLine(rand(canvas.width), rand(canvas.height)))
+    color()
+    drawCross()
+
+    //This does not work as intended
+    //[1,2,3].forEach(drawLine(rand(canvas.width), rand(canvas.height)))
 
   }
 
@@ -51,25 +69,47 @@
     return Math.random() * int
   }
 
-  //based on time of day with new Date()
-  function color() { }
-
-  //Our drawLine function
-  function drawLine(x, y, id) {
-    clearCanvas()
-    //Stroke/line properties
-    ctx.lineWidth = 5;
-    ctx.strokeStyle = 'red';
-
-    //X valued is given by rand()
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-    ctx.lineTo(x, y + 20);
-    ctx.stroke();
-    ctx.clear
+  //Color is based on time of day with = new Date()
+  function color() {
+    var date = new Date()
+    let ms = date.getMilliseconds()
+    main.style.backgroundColor = "#" + ms + "";
+    // let number = 5!
+    // console.log()
   }
-  
-  function clearCanvas(){
+
+  //Our crosslist
+  var myList = [];
+  function crossProperty() {
+    for (let i = 0; i <= 1; i++) {
+      let x = rand(canvas.width)
+      let y = rand(canvas.height)
+      
+      var obji = new Cross(x, y, i)
+      console.log(obji)
+      myList.push(obji)
+      console.log("list_:", myList)
+      console.log(myList)
+    }
+  }
+
+  function drawCross() {
+    crossProperty(1)
+    myList.forEach(Element => {
+
+
+      ctx.beginPath();
+      ctx.moveTo(Element.x, Element.y);
+      ctx.lineTo(Element.x, Element.y + 20);
+      ctx.lineTo(Element.x, Element.y + 5);
+
+      ctx.lineTo(Element.x + 10, Element.y + 5);
+      ctx.lineTo(Element.x - 10, Element.y + 5);
+      ctx.stroke();
+    });
+  }
+
+  function clearCanvas() {
     //Clears canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
