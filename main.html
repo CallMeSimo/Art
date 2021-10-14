@@ -18,13 +18,17 @@
 
 <!-- Loads drawLine() On start -->
 
-<body id="root" onload="prime()">
+<body id="root" onload="start()" style="transition: background-color 500ms">
   <center>
-    <canvas id="canvas" style="width:250px; height: 250px; margin-top: 20%;">
-    </canvas>
-    <button>
-
-    </button>
+    <ul>
+      <ol>
+        <canvas id="canvas" style="width:250px; height: 250px; margin-top: 20%; ">
+        </canvas>
+      </ol>
+      <ol>
+        <input id="range" type="range" min="1" max="100" value="5" />
+      </ol>
+    </ul>
   </center>
 
 
@@ -39,7 +43,15 @@
   main.style.backgroundColor = "#253d8d";
   c.style.backgroundColor = "aqua";
 
+  //Constant variables (Easy access)
   const time = 1000
+  let Amount;
+
+  //Our crosslist
+  var myList = new Array;
+  var prevList = new Array;
+
+
 
   class Cross {
     constructor(x, y, id) {
@@ -51,16 +63,18 @@
 
   }
 
-  //repeats prime() function with 750ms intervals
-  var draw = (() => setInterval(prime(), time))
-  draw()
+
+  function start() {
+    //repeats prime() function with {time} intervals
+    setInterval(() => prime(), time)
+  }
 
   function prime() {
+    Amount = parseFloat(document.getElementById("range").value);
     color()
-    drawCross()
-
-    //This does not work as intended
-    //[1,2,3].forEach(drawLine(rand(canvas.width), rand(canvas.height)))
+    clearCanvas()
+    crossProperty(Amount)
+    drawAllCrosses()
 
   }
 
@@ -71,47 +85,83 @@
 
   //Color is based on time of day with = new Date()
   function color() {
-    var date = new Date()
-    let ms = date.getMilliseconds()
+    var date = new Date();
+    let ms = date.getMilliseconds();
     main.style.backgroundColor = "#" + ms + "";
-    // let number = 5!
-    // console.log()
   }
 
-  //Our crosslist
-  var myList = [];
-  function crossProperty() {
-    for (let i = 0; i <= 1; i++) {
-      let x = rand(canvas.width)
-      let y = rand(canvas.height)
-      
-      var obji = new Cross(x, y, i)
-      console.log(obji)
-      myList.push(obji)
-      console.log("list_:", myList)
-      console.log(myList)
+  //Creates "Crosses"(objects) and adds properties per unit
+  function crossProperty(unit) {
+    for (let i = 0; i != unit; i++) {
+      let x = rand(canvas.width);
+      let y = rand(canvas.height);
+
+      var obji = new Cross(x, y, i);
+      console.log("list_:", myList);
+      console.log("Prevlist_:", prevList);
+
+
+      myList.push(obji)//List that will be generated
+      prevList.push(obji)//List that will be compared in smoothTransition WiP
+    }
+    if(prevList.length == 10){
+      prevList.slice(0,5) //MIGHT HAVE TO FIX
     }
   }
 
-  function drawCross() {
-    crossProperty(1)
-    myList.forEach(Element => {
+  function drawCross(pos) {
+    ctx.beginPath();
+    ctx.moveTo(pos.x, pos.y);
+    ctx.lineTo(pos.x, pos.y + 20);
+    ctx.lineTo(pos.x, pos.y + 5);
 
-
-      ctx.beginPath();
-      ctx.moveTo(Element.x, Element.y);
-      ctx.lineTo(Element.x, Element.y + 20);
-      ctx.lineTo(Element.x, Element.y + 5);
-
-      ctx.lineTo(Element.x + 10, Element.y + 5);
-      ctx.lineTo(Element.x - 10, Element.y + 5);
-      ctx.stroke();
-    });
+    ctx.lineTo(pos.x + 10, pos.y + 5);
+    ctx.lineTo(pos.x - 10, pos.y + 5);
+    ctx.stroke();
+    ctx.closePath();
   }
 
+  function drawAllCrosses() {
+    myList.forEach(listObj => {
+      drawCross(listObj)
+      smoothTransistion(listObj.x, listObj.y)
+
+    });
+
+  }
+
+  function transition() {
+  }
+
+  //WiP. Smooth transition from prev position too current position
+  function smoothTransistion(x1, y1) {
+    // if (prevList.length > 0) {
+    //   for (let i = 0; i != 5; i++) { //Might have to change 5 => 4
+
+    //     // var transitX = x1 - prevList[i].x //x2
+    //     // var transitY = y1 - prevList[i].y //y2
+
+    //     var transitD = Math.sqrt((prevList[i].x - x1)**2 + (prevList[i].y - y1)** 2);
+    //     transitD = Math.round(transitD)
+    //     console.log("transidD", transitD)
+    //     for(let g = 0; g <= transitD; g++) {
+    //       ctx.beginPath();
+    //       ctx.moveTo(prevList[i].x + g, prevList[i].y + g);
+    //       ctx.arc(60, 65, 5, 0, Math.PI * 2, true)
+    //       ctx.stroke();
+    //       ctx.closePath();
+    //       setInterval(() => clearCanvas(), 1000)
+    //     }
+    //   }
+    //   
+    // }
+  }
+
+  //This clears our canvas when called
   function clearCanvas() {
     //Clears canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    myList = []
   }
 
 </script>
