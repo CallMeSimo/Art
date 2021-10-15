@@ -28,6 +28,9 @@
       <ol>
         <input id="range" type="range" min="1" max="100" value="5" />
       </ol>
+      <ol>
+        <input id="Speedrange" type="range" min="1000" max="10000" value="5000" />
+      </ol>
     </ul>
   </center>
 
@@ -44,7 +47,7 @@
   c.style.backgroundColor = "aqua";
 
   //Constant variables (Easy access)
-  const time = 1000
+  let time = 1000;
   let Amount;
 
   //Our crosslist
@@ -70,7 +73,9 @@
   }
 
   function prime() {
-    Amount = parseFloat(document.getElementById("range").value);
+    Amount = parseInt(document.getElementById("range").value);
+    time = parseFloat(document.getElementById("Speedrange").value); //Does not work
+    console.log(time)
     color()
     clearCanvas()
     crossProperty(Amount)
@@ -104,9 +109,6 @@
       myList.push(obji)//List that will be generated
       prevList.push(obji)//List that will be compared in smoothTransition WiP
     }
-    if(prevList.length == 10){
-      prevList.slice(0,5) //MIGHT HAVE TO FIX
-    }
   }
 
   function drawCross(pos) {
@@ -132,10 +134,9 @@
 
   function transition() {
   }
-
   //WiP. Smooth transition from prev position too current position
   function smoothTransistion(x1, y1) {
-    // if (prevList.length > 0) {
+    // if (prevList.length > 5) {
     //   for (let i = 0; i != 5; i++) { //Might have to change 5 => 4
 
     //     // var transitX = x1 - prevList[i].x //x2
@@ -143,25 +144,34 @@
 
     //     var transitD = Math.sqrt((prevList[i].x - x1)**2 + (prevList[i].y - y1)** 2);
     //     transitD = Math.round(transitD)
+
     //     console.log("transidD", transitD)
-    //     for(let g = 0; g <= transitD; g++) {
+
+    //     w=λu+(1−λ)v
+    //     λ∈[0,1]
+
+    //     while(transitD != 0) {
     //       ctx.beginPath();
-    //       ctx.moveTo(prevList[i].x + g, prevList[i].y + g);
+    //       ctx.moveTo(prevList[i].x  + g, prevList[i].y + g);
     //       ctx.arc(60, 65, 5, 0, Math.PI * 2, true)
     //       ctx.stroke();
     //       ctx.closePath();
-    //       setInterval(() => clearCanvas(), 1000)
+    //       setInterval(() => clearCanvas(), 10)
     //     }
     //   }
-    //   
+      
     // }
   }
+
 
   //This clears our canvas when called
   function clearCanvas() {
     //Clears canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     myList = []
+    prevList = prevList.slice(0,5)
+    console.log("Prevlist_2:", prevList);
+
   }
 
 </script>
