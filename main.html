@@ -26,7 +26,7 @@
         </canvas>
       </ol>
       <ol>
-        <input id="range" type="range" min="1" max="100" value="5" />
+        <input id="range" type="range" min="1" max="100" value="1" />
       </ol>
       <ol>
         <input id="Speedrange" type="range" min="1000" max="10000" value="5000" />
@@ -42,18 +42,21 @@
   var c = document.getElementById("canvas"); //Gets canvas onto "c"
   var ctx = c.getContext("2d"); // Gets "c"(Our canvas) 2d so it can later draw on it
 
+
   // Website style
   main.style.backgroundColor = "#253d8d";
   c.style.backgroundColor = "aqua";
 
-  //Constant variables (Easy access)
-  let time = 1000;
+
+  //Variables (Easy access)
+  let time = 1;
   let Amount;
+  let transistionSpeed = 0.1 // 0 -> 1
+
 
   //Our crosslist
   var myList = new Array;
   var prevList = new Array;
-
 
 
   class Cross {
@@ -63,9 +66,7 @@
       this.id = id;
 
     }
-
   }
-
 
   function start() {
     //repeats prime() function with {time} intervals
@@ -74,12 +75,13 @@
 
   function prime() {
     Amount = parseInt(document.getElementById("range").value);
-    time = parseFloat(document.getElementById("Speedrange").value); //Does not work
+    time = parseFloat(document.getElementById("Speedrange").value); //Does not work WiP
     console.log(time)
     color()
     clearCanvas()
     crossProperty(Amount)
     drawAllCrosses()
+    myList = [] // Might be wrong
 
   }
 
@@ -129,49 +131,35 @@
       smoothTransistion(listObj.x, listObj.y)
 
     });
-
   }
 
-  function transition() {
-  }
+  const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
+
   //WiP. Smooth transition from prev position too current position
-  function smoothTransistion(x1, y1) {
-    // if (prevList.length > 5) {
-    //   for (let i = 0; i != 5; i++) { //Might have to change 5 => 4
+  async function smoothTransistion(x1, y1) {
+  //   for(let i = 0; i <= Amount; i++){
+  //     for(t = 0; t <= 1; t += transistionSpeed){
+  //       let x =  (prevList[i].x  + t * (x1- prevList[i].x))
+  //       let y = (prevList[i].y + t * (y1 - prevList[i].y ))
 
-    //     // var transitX = x1 - prevList[i].x //x2
-    //     // var transitY = y1 - prevList[i].y //y2
+  //       var xy = {x, y}
+  //       drawCross(xy)
+  //       console.log(time * transistionSpeed)
+  //       await sleep(time * transistionSpeed)
 
-    //     var transitD = Math.sqrt((prevList[i].x - x1)**2 + (prevList[i].y - y1)** 2);
-    //     transitD = Math.round(transitD)
-
-    //     console.log("transidD", transitD)
-
-    //     w=λu+(1−λ)v
-    //     λ∈[0,1]
-
-    //     while(transitD != 0) {
-    //       ctx.beginPath();
-    //       ctx.moveTo(prevList[i].x  + g, prevList[i].y + g);
-    //       ctx.arc(60, 65, 5, 0, Math.PI * 2, true)
-    //       ctx.stroke();
-    //       ctx.closePath();
-    //       setInterval(() => clearCanvas(), 10)
-    //     }
-    //   }
-      
-    // }
+  //       clearCanvas()  //THIS DOES NOT WORK OR SOMETHING IS UNEXPECTED      
+  //       }
+  //   }
+  //   myList = [] // Might be wrong
+  //   prevList = prevList.slice(1)
   }
-
 
   //This clears our canvas when called
   function clearCanvas() {
     //Clears canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    myList = []
-    prevList = prevList.slice(0,5)
+    // prevList = prevList.slice(0,5)
     console.log("Prevlist_2:", prevList);
-
   }
 
 </script>
